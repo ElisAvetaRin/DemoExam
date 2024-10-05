@@ -3,7 +3,8 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
     QLineEdit, QPushButton, QLabel, QMessageBox
 )
-
+from sqlalchemy.orm import Session
+from Orm_models import SessionLocal, User
 class AuthApp(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -55,6 +56,17 @@ class AuthApp(QMainWindow):
         else:
             self.users[username] = password
             QMessageBox.information(self, "Успех", "Регистрация прошла успешно!")
+    def add_user(self):
+        name = self.name_input.text()
+        password = self.password_input.text()
+        db: Session = SessionLocal()
+        new_user = User(name=name, password=password)
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        self.result_label.setText(f'added user:{new_user.name}')
+        db.close
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

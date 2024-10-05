@@ -11,4 +11,8 @@ class User(Base):
     name = Column(String(100))
     password = Column(String(100))
 
-#DATABASE_URL =
+DATABASE_URL = "mysql+mysqldb://username:password@localhost/HotelDatabase"
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base.metadata.create_all(bind=engine)
