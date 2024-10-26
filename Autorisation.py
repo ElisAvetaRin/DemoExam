@@ -36,14 +36,14 @@ class AuthApp(QMainWindow):
         self.register_button.clicked.connect(self.register)
         self.layout.addWidget(self.register_button)
 
-        self.users = {}  # Словарь для хранения пользователей
+        self.users = {}  
 
     def login(self):
         username = self.username_input.text()
         password = self.password_input.text()
 
         if username in self.users and self.users[username] == password:
-            QMessageBox.information(self, "Успех", "Вы успешно вошли!")
+            QMessageBox.information(self, "Успех", "Вы успешно авторизовались")
         else:
             QMessageBox.warning(self, "Ошибка", "Неверное имя пользователя или пароль.")
 
