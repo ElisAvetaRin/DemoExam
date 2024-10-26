@@ -36,13 +36,13 @@ class AuthApp(QMainWindow):
         self.register_button.clicked.connect(self.register)
         self.layout.addWidget(self.register_button)
 
-        self.users = {}  
+        # self.users = {}  
 
     def login(self):
         username = self.username_input.text()
         password = self.password_input.text()
 
-        if username in self.users and self.users[username] == password:
+        if User.query.filter_by(name=username, password=password).first():
             QMessageBox.information(self, "Успех", "Вы успешно авторизовались")
         else:
             QMessageBox.warning(self, "Ошибка", "Неверное имя пользователя или пароль.")
@@ -56,6 +56,7 @@ class AuthApp(QMainWindow):
         else:
             self.users[username] = password
             QMessageBox.information(self, "Успех", "Регистрация прошла успешно!")
+    
     def add_user(self):
         name = self.name_input.text()
         password = self.password_input.text()
@@ -63,7 +64,7 @@ class AuthApp(QMainWindow):
         new_user = User(name=name, password=password)
         db.add(new_user)
         db.commit()
-        db.refresh(new_user)
+        # db.refresh(new_user)
         self.result_label.setText(f'added user:{new_user.name}')
         db.close
 
